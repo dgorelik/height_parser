@@ -57,7 +57,7 @@ model = tf.keras.Sequential([
     tf.keras.layers.Embedding(len(vocab), 64),
     tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(64)),
     tf.keras.layers.Dense(64, activation='relu'),
-    tf.keras.layers.Dense(1, activation='relu'),
+    tf.keras.layers.Dense(1, activation='sigmoid'),
 ])
 
 model.compile(loss='mse', optimizer='adam', metrics=['mae'])
