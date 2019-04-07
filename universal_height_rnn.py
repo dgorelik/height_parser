@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import tensorflow as tf
@@ -84,18 +84,31 @@ train_labels = np.array([[height/norm_factor, units]
 
 model = tf.keras.Sequential([
     tf.keras.layers.Embedding(len(vocab), 64),
-    tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(64)),
+    tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(128)),
+    tf.keras.layers.Dense(128, activation='relu'),
     tf.keras.layers.Dense(64, activation='relu'),
-    tf.keras.layers.Dense(1, activation='sigmoid'),
+    tf.keras.layers.Dense(2, activation='sigmoid')
 ])
 
 model.compile(loss='mse', optimizer='adam', metrics=['mae'])
 
-history = model.fit(
+model.fit(
     train_data,
     train_labels,
-    epochs=10,
-    batch_size=512,
+    epochs=2,
+    batch_size=32,
+    validation_split=0.2)
+model.fit(
+    train_data,
+    train_labels,
+    epochs=2,
+    batch_size=2048,
+    validation_split=0.2)
+model.fit(
+    train_data,
+    train_labels,
+    epochs=2,
+    batch_size=8192,
     validation_split=0.2)
 
 def predict(model, height_txt):
